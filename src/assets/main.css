@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html {
+    @apply h-full bg-gray-50;
+}
+
+nav a.router-link-active {  /* router-link-exact-active */
+    @apply bg-indigo-700 text-white;
+}
+
+nav a:not(.router-link-active) {
+    @apply text-indigo-200 hover:text-white hover:bg-indigo-700;
+}
