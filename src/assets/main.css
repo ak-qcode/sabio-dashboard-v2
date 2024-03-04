@@ -6,7 +6,7 @@ html {
     @apply h-full bg-gray-50;
 }
 
-nav a.router-link-active {  /* router-link-exact-active */
+nav .router-link-active {  /* router-link-exact-active */
     @apply bg-indigo-700 text-white;
 }
 

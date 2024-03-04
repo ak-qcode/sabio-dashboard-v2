@@ -2,6 +2,7 @@
 
 import {Dialog, DialogPanel, TransitionChild, TransitionRoot} from "@headlessui/vue";
 import {Cog6ToothIcon, XMarkIcon} from "@heroicons/vue/24/outline";
+import {useTradingAccountStore} from "@/stores/tradingAccount";
 
 const sidebarOpen = defineModel();
 
@@ -9,6 +10,8 @@ defineProps([
     'navigation',
     'teams',
 ])
+
+const tradingAccountStore = useTradingAccountStore();
 </script>
 
 <template>
@@ -47,13 +50,16 @@ defineProps([
                                         </ul>
                                     </li>
                                     <li>
-                                        <div class="text-xs font-semibold leading-6 text-indigo-200">Your teams</div>
+                                        <div class="text-xs font-semibold leading-6 text-indigo-200">Your trading accounts</div>
                                         <ul role="list" class="-mx-2 mt-2 space-y-1">
-                                            <li v-for="team in teams" :key="team.name">
-                                                <RouterLink :to="team.href" :class="[team.current ? 'bg-indigo-700 text-white' : 'text-indigo-200 hover:text-white hover:bg-indigo-700', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold']">
-                                                    <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-indigo-400 bg-indigo-500 text-[0.625rem] font-medium text-white">{{ team.initial }}</span>
-                                                    <span class="truncate">{{ team.name }}</span>
-                                                </RouterLink>
+                                            <li v-for="account in tradingAccountStore.tradingAccounts" :key="account.accountId">
+                                                <button
+                                                    :class="[tradingAccountStore.currentAccount?.accountId === account.accountId ? 'bg-indigo-700 text-white' : 'text-indigo-200 hover:text-white hover:bg-indigo-700', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold w-full']"
+                                                    @click="tradingAccountStore.selectAccount(account.accountId)"
+                                                >
+                                                    <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-indigo-400 bg-indigo-500 text-[0.625rem] font-medium text-white">{{ account.accountId }}</span>
+                                                    <span class="truncate">{{ account.login }}</span>
+                                                </button>
                                             </li>
                                         </ul>
                                     </li>

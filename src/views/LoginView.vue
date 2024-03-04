@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import AuthLayout from "@/layouts/AuthLayout.vue";
 import axios from "axios";
+import {useAuthStore} from "@/stores/auth";
+import {useRouter} from "vue-router";
 
 const formData = {
     email: '',
@@ -8,13 +10,20 @@ const formData = {
     remember: false,
 }
 
+const router = useRouter()
+const auth = useAuthStore()
+
 async function login(e: Event) {
     e.preventDefault();
 
     await axios.get('/sanctum/csrf-cookie')
 
-    axios.post('/login', formData)
-        .then(response => console.log(response))
+    await axios.post('/login', formData)
+        .then(() => {
+            auth.fetchCustomerInfo()
+
+            router.push('/')
+        })
         .catch(err => console.error(err))
 }
 </script>
