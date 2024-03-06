@@ -2,6 +2,9 @@
 import AuthLayout from "@/layouts/AuthLayout.vue";
 import {useAuthStore} from "@/stores/auth";
 import {useRouter} from "vue-router";
+import { notify } from "notiwind"
+import axios, {AxiosError} from "axios";
+import {ref} from "vue";
 
 const formData = {
     email: '',
@@ -11,10 +14,6 @@ const formData = {
 
 const router = useRouter()
 const auth = useAuthStore()
-
-import { notify } from "notiwind"
-import axios, {AxiosError} from "axios";
-import {ref} from "vue";
 
 const isLoading = ref(false)
 

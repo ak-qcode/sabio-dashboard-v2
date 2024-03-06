@@ -7,7 +7,7 @@ interface Customer {
   id: bigint
   email: string
   notificationQty: number
-  name: string
+  fullName: string
   firstName: string
   lastName: string
 }
@@ -33,7 +33,7 @@ export const useAuthStore = defineStore('auth', () => {
         id: data.id,
         email: data.email,
         notificationQty: data.notificationQty,
-        name: data.name,
+        fullName: data.first_name + ' ' + data.last_name,
         firstName: data.first_name,
         lastName: data.last_name,
       }
