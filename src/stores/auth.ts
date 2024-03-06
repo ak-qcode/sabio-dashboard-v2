@@ -8,6 +8,8 @@ interface Customer {
   email: string
   notificationQty: number
   name: string
+  firstName: string
+  lastName: string
 }
 
 export const useAuthStore = defineStore('auth', () => {
@@ -18,41 +20,42 @@ export const useAuthStore = defineStore('auth', () => {
 
   const tradingAccountStore = useTradingAccountStore()
 
-  function fetchCustomerInfo() {
+  async function fetchCustomerInfo() {
     isLoading.value = true
 
     try {
-      axios.get('/customers/current')
-          .then(res => res.data)
-          .then(data => {
-            isLoggedIn.value = true
+      const response = await axios.get('/customers/current');
+      const data = response.data
 
-            customer.value = {
-              id: data.id,
-              email: data.email,
-              notificationQty: data.notificationQty,
-              name: data.name,
-            }
+      isLoggedIn.value = true
 
-            tradingAccountStore.setList(data.tradingAccounts)
+      customer.value = {
+        id: data.id,
+        email: data.email,
+        notificationQty: data.notificationQty,
+        name: data.name,
+        firstName: data.first_name,
+        lastName: data.last_name,
+      }
 
-            isLoading.value = false
-          })
-    } catch (e) {
+      tradingAccountStore.setList(data.tradingAccounts)
+    } catch (error) {
+      return
+    } finally {
       isLoading.value = false
-
-      throw e
     }
   }
 
   function logOut() {
     axios.delete('/logout')
-        .then(() => {
-          customer.value = null
-          isLoggedIn.value = false
-          isLoading.value = false
-        })
+        .then(reset)
   }
 
-  return {isLoggedIn, isLoading, customer, fetchCustomerInfo, logOut}
+  function reset() {
+    customer.value = null
+    isLoggedIn.value = false
+    isLoading.value = false
+  }
+
+  return {isLoggedIn, isLoading, customer, fetchCustomerInfo, logOut, reset}
 })

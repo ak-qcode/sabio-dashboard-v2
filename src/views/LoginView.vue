@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import AuthLayout from "@/layouts/AuthLayout.vue";
-import axios from "axios";
 import {useAuthStore} from "@/stores/auth";
 import {useRouter} from "vue-router";
 
@@ -13,18 +12,45 @@ const formData = {
 const router = useRouter()
 const auth = useAuthStore()
 
+import { notify } from "notiwind"
+import axios, {AxiosError} from "axios";
+import {ref} from "vue";
+
+const isLoading = ref(false)
+
 async function login(e: Event) {
-    e.preventDefault();
+  e.preventDefault();
 
-    await axios.get('/sanctum/csrf-cookie')
+  isLoading.value = true
 
+  try {
     await axios.post('/login', formData)
-        .then(() => {
-            auth.fetchCustomerInfo()
 
-            router.push('/')
-        })
-        .catch(err => console.error(err))
+    await auth.fetchCustomerInfo()
+
+    notify({
+      title: 'Welcome back, ' + (auth.customer?.firstName || 'SabioTrader') + '!',
+      type: "success",
+    }, 2500)
+
+    await router.push('/')
+  } catch (error: any) {
+    if (!(error instanceof AxiosError)) {
+      notify({
+        title: 'Oh, unexpected Javascript error',
+        text: error.message,
+        type: "error",
+      }, 15000)
+    } else {
+      notify({
+        title: error.response?.data?.message || 'ERROR',
+        text: error.message, // TODO: customize it
+        type: "error",
+      }, 10000)
+    }
+  }
+
+  isLoading.value = false
 }
 </script>
 <template>
@@ -59,7 +85,7 @@ async function login(e: Event) {
                     </div>
 
                     <div>
-                        <button type="submit" class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Sign in</button>
+                        <button :disabled="isLoading" type="submit" class="flex w-full justify-center rounded-md bg-indigo-600 disabled:bg-indigo-200 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Sign in</button>
                     </div>
                 </form>
 

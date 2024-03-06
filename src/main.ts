@@ -9,6 +9,7 @@ import router from './router'
 import { useAuthStore } from './stores/auth';
 
 import axios from "axios";
+import Notifications, { notify } from 'notiwind'
 
 axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
@@ -18,6 +19,7 @@ const app = createApp(App)
 
 app.use(createPinia())
 app.use(router)
+app.use(Notifications)
 
 const auth = useAuthStore()
 
@@ -31,15 +33,38 @@ router.beforeEach((to) => {
   }
 })
 
+axios.interceptors.request.use(async (config) => {
+  const safeMethods = ['GET', 'OPTIONS', 'HEAD']
+  if (config.method && !safeMethods.includes(config.method.toUpperCase())) {
+    await axios.get('/sanctum/csrf-cookie')
+  }
+
+  return config
+})
+
 axios.interceptors.response.use(undefined, function (error) {
   const statusCode = error.response ? error.response.status : null;
 
+  if (!statusCode) {
+    notify({
+      title: "Server request execution error",
+      text: error.message,
+      type: "error",
+    }, 15000)
+
+    return null
+  }
+
   if (statusCode === 401 && router.currentRoute?.value?.name != 'login') {
-    alert('received 401 code, logging out...') // TODO: replace by notifier
+    notify({
+      title: "You're no longer authenticated",
+      text: "Your authentication session has expired. Please log in again.",
+      type: "warning",
+    }, 5000)
 
-    auth.$reset()
+    auth.reset()
 
-    router.push('/login') // FIXME: doesn't work
+    router.push('/login')
 
     return null
   }
@@ -48,5 +73,3 @@ axios.interceptors.response.use(undefined, function (error) {
 })
 
 app.mount('#app')
-
-auth.fetchCustomerInfo()
