@@ -8,7 +8,7 @@
             <Header v-model="sidebarOpen" />
 
             <main class="py-10">
-                <div class="px-4 sm:px-6 lg:px-8">
+              <div v-if="authStore.customer" class="px-4 sm:px-6 lg:px-8">
                     <slot />
                 </div>
             </main>
@@ -20,23 +20,24 @@
 import {onMounted, ref} from 'vue'
 
 import {
-    CalendarIcon,
-    ChartPieIcon,
-    DocumentDuplicateIcon,
-    FolderIcon,
-    HomeIcon,
-    UsersIcon,
+  CalendarIcon,
+  ChartPieIcon,
+  DocumentDuplicateIcon,
+  FolderIcon,
+  HomeIcon,
+  UsersIcon,
 } from '@heroicons/vue/24/outline'
 
 import MobileSidebar from "@/components/sidebar/MobileSidebar.vue";
 import DesktopSidebar from "@/components/sidebar/DesktopSidebar.vue";
 import Header from "@/components/sidebar/Header.vue";
 import {initFlowbite} from "flowbite";
+import {useAuthStore} from "@/stores/auth";
 
 const navigation = [
     { name: 'Dashboard', href: '/', icon: HomeIcon },
     { name: 'Login', href: '/login', icon: HomeIcon },
-    { name: 'Team', href: '/team', icon: UsersIcon },
+  {name: 'Checkout', href: '/checkout', icon: UsersIcon},
     { name: 'Projects', href: '/projects', icon: FolderIcon },
     { name: 'Calendar', href: '/calendar', icon: CalendarIcon },
     { name: 'Documents', href: '/documents', icon: DocumentDuplicateIcon },
@@ -48,4 +49,7 @@ const sidebarOpen = ref(false)
 onMounted(() => {
   initFlowbite();
 })
+
+const authStore = useAuthStore()
+
 </script>

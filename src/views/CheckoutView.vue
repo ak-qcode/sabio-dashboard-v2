@@ -1,0 +1,23 @@
+<script lang="ts" setup>
+
+import DashboardLayout from "@/layouts/DashboardLayout.vue";
+import Plans from "@/components/checkout/Plans.vue";
+import BillingDetails from "@/components/checkout/BillingDetails.vue";
+import CheckoutSummary from "@/components/checkout/CheckoutSummary.vue";
+</script>
+
+<template>
+  <DashboardLayout>
+    <div class="lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16">
+      <div class="md:max-w-[679px]">
+        <Plans class="border-b border-gray-900/10 pb-8"/>
+        <BillingDetails class="border-b border-gray-900/10 mt-8 pb-12"/>
+      </div>
+      <div class="md:max-w-[679px]">
+        <CheckoutSummary/>
+      </div>
+    </div>
+
+
+  </DashboardLayout>
+</template>

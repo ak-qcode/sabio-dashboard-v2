@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import DashboardLayout from "@/layouts/DashboardLayout.vue";
 import {type TradingAccount, useTradingAccountStore} from "@/stores/tradingAccount";
-import {ref, watch} from "vue";
+import {onMounted, ref, watch} from "vue";
 import {Switch, SwitchGroup, SwitchLabel} from '@headlessui/vue'
 import ApexCharts from "apexcharts";
 import GeneralInfo from "@/components/dashboard/GeneralInfo.vue";
@@ -126,6 +126,12 @@ const renderChart = () => {
 }
 
 watch(useTestData, renderChart)
+
+onMounted(() => {
+  if (tradingAccountStore.currentAccount) {
+    tradingAccountStore.fetchShow(tradingAccountStore.currentAccount.accountId)
+  }
+})
 
 watch(() => tradingAccountStore.currentAccount, (currentAccount: TradingAccount) => {
   tradingAccountStore.fetchShow(currentAccount.accountId)
