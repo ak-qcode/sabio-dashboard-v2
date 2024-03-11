@@ -8,7 +8,6 @@ const sidebarOpen = defineModel();
 
 defineProps([
     'navigation',
-    'teams',
 ])
 
 const tradingAccountStore = useTradingAccountStore();

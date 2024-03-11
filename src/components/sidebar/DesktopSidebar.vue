@@ -5,7 +5,6 @@ import {useTradingAccountStore} from "@/stores/tradingAccount";
 
 defineProps([
     'navigation',
-    'teams',
 ])
 
 const tradingAccountStore = useTradingAccountStore();

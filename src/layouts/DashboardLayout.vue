@@ -1,8 +1,8 @@
 <template>
     <div>
-        <MobileSidebar v-model="sidebarOpen" :navigation :teams />
+        <MobileSidebar v-model="sidebarOpen" :navigation />
 
-        <DesktopSidebar :navigation :teams />
+        <DesktopSidebar :navigation />
 
         <div class="lg:pl-72">
             <Header v-model="sidebarOpen" />
@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import {onMounted, ref} from 'vue'
 
 import {
     CalendarIcon,
@@ -31,6 +31,7 @@ import {
 import MobileSidebar from "@/components/sidebar/MobileSidebar.vue";
 import DesktopSidebar from "@/components/sidebar/DesktopSidebar.vue";
 import Header from "@/components/sidebar/Header.vue";
+import {initFlowbite} from "flowbite";
 
 const navigation = [
     { name: 'Dashboard', href: '/', icon: HomeIcon },
@@ -42,12 +43,9 @@ const navigation = [
     { name: 'Reports', href: '/reports', icon: ChartPieIcon },
 ]
 
-const teams = [
-    { id: 1, name: 'Heroicons', href: '/teams/h', initial: 'H' },
-    { id: 2, name: 'Tailwind Labs', href: '/teams/t', initial: 'T' },
-    { id: 3, name: 'Workcation', href: '/teams/w', initial: 'W' },
-    { id: 4, name: 'Lol', href: '/teams/l', initial: 'L' },
-]
-
 const sidebarOpen = ref(false)
+
+onMounted(() => {
+  initFlowbite();
+})
 </script>
