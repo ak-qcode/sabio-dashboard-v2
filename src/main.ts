@@ -10,6 +10,8 @@ import { useAuthStore } from './stores/auth';
 
 import axios from "axios";
 import Notifications, { notify } from 'notiwind'
+import {Tolgee, DevTools, LanguageDetector, LanguageStorage, VueTolgee, FormatSimple, useTolgee} from '@tolgee/vue';
+import {setNumberFormatter} from "@/utils/numberFormatter";
 
 axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
@@ -25,6 +27,29 @@ pinia.use(({ store }) => {
 app.use(pinia)
 app.use(router)
 app.use(Notifications)
+
+const tolgee = Tolgee()
+    .use(DevTools())
+    .use(LanguageDetector())
+    .use(LanguageStorage())
+    .use(FormatSimple())
+    .init({
+      availableLanguages: ['en', 'cs', 'es', 'fr'],
+      defaultLanguage: 'en',
+
+      // for development
+      apiUrl: import.meta.env.VITE_APP_TOLGEE_API_URL,
+      apiKey: import.meta.env.VITE_APP_TOLGEE_API_KEY,
+
+      // for production
+      staticData: {},
+    });
+
+app.use(VueTolgee, { tolgee });
+
+setNumberFormatter(tolgee.getInitialOptions().defaultLanguage || "en")
+
+tolgee.on('language', setNumberFormatter);
 
 const auth = useAuthStore()
 

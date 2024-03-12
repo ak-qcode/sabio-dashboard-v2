@@ -1,0 +1,11 @@
+tolgee:
+  authentication:
+    initial-password: admin
+    initial-username: admin
+    jwt-secret: d19b7f7a592eb07b1f37b94160fd9d071ac926581dd0ec15e3ba07e32dd25d89
+    google:
+      authorization-url: https://oauth2.googleapis.com/token
+      client-id:
+      client-secret:
+      user-url: https://www.googleapis.com/oauth2/v3/userinfo
+      workspace-domain:

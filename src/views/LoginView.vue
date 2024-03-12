@@ -5,6 +5,8 @@ import {useRouter} from "vue-router";
 import { notify } from "notiwind"
 import axios, {AxiosError} from "axios";
 import {ref} from "vue";
+import {T} from "@tolgee/vue";
+import LanguageSelector from "@/components/ui/LanguageSelector.vue";
 
 const formData = {
     email: '',
@@ -54,7 +56,10 @@ async function login(e: Event) {
 </script>
 <template>
     <AuthLayout>
-        <template v-slot:title>Sign in to your account</template>
+        <template v-slot:title>
+          <T keyName="login.title" defaultValue="Sign in to your account" />
+        </template>
+
         <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
             <div class="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
                 <form class="space-y-6" @submit="login">
@@ -124,6 +129,8 @@ async function login(e: Event) {
                 {{ ' ' }}
                 <a href="#" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Start a 14 day free trial</a>
             </p>
+
+          <LanguageSelector class="mt-10" />
         </div>
     </AuthLayout>
 </template>
