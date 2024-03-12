@@ -49,6 +49,8 @@ export const useAuthStore = defineStore('auth', () => {
   function logOut() {
     axios.delete('/logout')
         .then(reset)
+
+    // TODO: redirect to login page
   }
 
   function reset() {

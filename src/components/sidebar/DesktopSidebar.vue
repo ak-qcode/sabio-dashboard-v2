@@ -2,6 +2,7 @@
 
 import {Cog6ToothIcon} from "@heroicons/vue/24/outline";
 import {useTradingAccountStore} from "@/stores/tradingAccount";
+import LanguageSelector from "@/components/ui/LanguageSelector.vue";
 
 defineProps([
     'navigation',
@@ -45,6 +46,9 @@ const tradingAccountStore = useTradingAccountStore();
                         </ul>
                     </li>
                     <li class="mt-auto">
+                      <LanguageSelector :isSidebar="true" />
+                    </li>
+                    <li>
                         <a href="#" class="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-indigo-200 hover:bg-indigo-700 hover:text-white">
                             <Cog6ToothIcon class="h-6 w-6 shrink-0 text-indigo-200 group-hover:text-white" aria-hidden="true" />
                             Settings

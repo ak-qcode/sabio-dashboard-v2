@@ -61,7 +61,7 @@ const {isFetching: isFetchingCountries, error, data: countries} = useFetch('/loc
         </div>
       </div>
 
-      <div class="sm:col-span-3">
+      <div class="sm:col-span-4">
         <label class="block text-sm font-medium leading-6 text-gray-900" for="countryCode">Country</label>
         <div class="mt-2">
           <select id="countryCode"
@@ -86,7 +86,7 @@ const {isFetching: isFetchingCountries, error, data: countries} = useFetch('/loc
         </div>
       </div>
 
-      <div class="sm:col-span-2 sm:col-start-1">
+      <div class="sm:col-span-4 sm:col-start-1">
         <label class="block text-sm font-medium leading-6 text-gray-900" for="city">City</label>
         <div class="mt-2">
           <input id="city"
@@ -99,7 +99,7 @@ const {isFetching: isFetchingCountries, error, data: countries} = useFetch('/loc
       </div>
 
       <div class="sm:col-span-2">
-        <label class="block text-sm font-medium leading-6 text-gray-900" for="postal-code">ZIP / Postal code</label>
+        <label class="block text-sm font-medium leading-6 text-gray-900" for="postal-code">Postal code</label>
         <div class="mt-2">
           <input id="postal-code"
                  v-model="formData.postalCode"

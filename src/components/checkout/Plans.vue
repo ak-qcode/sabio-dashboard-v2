@@ -36,36 +36,12 @@
 </template>
 
 <script lang="ts" setup>
-import {ref} from 'vue'
 import {RadioGroup, RadioGroupDescription, RadioGroupLabel, RadioGroupOption} from '@headlessui/vue'
 
-const plans = [
-  {
-    id: 1,
-    name: "Standart",
-    initialBalance: "$10K",
-    price: 250,
-  },
-  {
-    id: 2,
-    name: "Premium",
-    initialBalance: "$50K",
-    price: 500,
-  },
-  {
-    id: 3,
-    name: "Gold",
-    initialBalance: "$100K",
-    price: 750,
-  },
-  {
-    id: 4,
-    name: "Platinum",
-    initialBalance: "$200K",
-    price: 1000,
-  },
-]
+const selected = defineModel('selected')
 
-const selected = ref(plans[2])
+defineProps([
+  'plans',
+])
 
 </script>
