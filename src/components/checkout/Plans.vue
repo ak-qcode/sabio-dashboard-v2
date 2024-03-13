@@ -1,10 +1,10 @@
 <template>
   <div>
     <h3 class="font-semibold text-md">Plans and Pricing</h3>
-    <RadioGroup v-model="selected" class="mt-4">
+    <RadioGroup v-model="store.selectedPlan" class="mt-4">
       <RadioGroupLabel class="sr-only">Pricing plans</RadioGroupLabel>
       <div class="flex flex-wrap flex-col gap-4 -space-y-px rounded-md">
-        <RadioGroupOption v-for="plan in plans"
+        <RadioGroupOption v-for="plan in store.plans"
                           :key="plan.name"
                           v-slot="{ checked, active }"
                           :value="plan"
@@ -26,7 +26,7 @@
             </RadioGroupDescription>
             <RadioGroupDescription :class="[checked ? 'text-indigo-700' : 'text-gray-900', 'ml-6 pl-1 md:ml-0 md:pl-0 md:text-right text-2xl']"
                                    as="span">
-              {{ plan.initialBalance }}
+              {{ formatMoney(plan.initialBalance) }}
             </RadioGroupDescription>
           </div>
         </RadioGroupOption>
@@ -37,11 +37,12 @@
 
 <script lang="ts" setup>
 import {RadioGroup, RadioGroupDescription, RadioGroupLabel, RadioGroupOption} from '@headlessui/vue'
+import type {ModelRef} from "@vue/runtime-core";
+import type {Plan} from "@/api/types";
+import {useCheckoutStore} from "@/stores/checkout";
+import {formatMoney} from "@/utils/numberFormatter";
+import {unref} from "vue";
 
-const selected = defineModel('selected')
-
-defineProps([
-  'plans',
-])
+const store = useCheckoutStore()
 
 </script>

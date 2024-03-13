@@ -1,7 +1,7 @@
 export interface Plan {
   id: number,
   name: string,
-  initialBalance: number | string,
+  initialBalance: number,
   price: number,
   specs: PlanSpec[]
 }

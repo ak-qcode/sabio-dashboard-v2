@@ -133,8 +133,10 @@ onMounted(() => {
   }
 })
 
-watch(() => tradingAccountStore.currentAccount, (currentAccount: TradingAccount) => {
-  tradingAccountStore.fetchShow(currentAccount.accountId)
+watch(() => tradingAccountStore.currentAccount, (currentAccount: TradingAccount | null | undefined) => {
+  if (currentAccount) {
+    tradingAccountStore.fetchShow(currentAccount.accountId)
+  }
 })
 
 watch(() => tradingAccountStore.dashboardData, renderChart)

@@ -3,8 +3,9 @@
 import {Dialog, DialogPanel, TransitionChild, TransitionRoot} from "@headlessui/vue";
 import {Cog6ToothIcon, XMarkIcon} from "@heroicons/vue/24/outline";
 import {useTradingAccountStore} from "@/stores/tradingAccount";
+import type {ModelRef} from "@vue/runtime-core";
 
-const sidebarOpen = defineModel();
+const sidebarOpen: ModelRef<boolean | undefined> = defineModel();
 
 defineProps([
     'navigation',

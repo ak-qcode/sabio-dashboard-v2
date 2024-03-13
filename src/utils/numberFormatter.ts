@@ -6,6 +6,8 @@ const makeNumberFormatter = (locale: string) => {
     currency: "USD",
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
+
+    // @ts-ignore
     trailingZeroDisplay: 'stripIfInteger',
   })
 }
@@ -16,7 +18,7 @@ export const setNumberFormatter = (locale: Ref<string> | string) => {
   numberFormatter = makeNumberFormatter(typeof locale === "string" ? locale : locale.value)
 }
 
-export const formatMoney = (value: number | undefined, precision: number = 2) => {
+export const formatMoney = (value: number | undefined) => {
   if (!value) {
     return "-"
   }
