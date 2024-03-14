@@ -81,7 +81,7 @@ const getColSpanClass = (idx: number) => {
 
 <template>
   <div class="mt-8 pt-8 border-t border-gray-200">
-    <RadioGroup v-model="checkoutStore.selectedPaymentMethod">
+    <RadioGroup v-model="checkoutStore.selectedPaymentMethod" by="key">
       <RadioGroupLabel class="text-lg font-medium text-gray-900">Select payment method</RadioGroupLabel>
 
       <div v-if="!isFetching && !error && paymentMethods" class="mt-4 grid grid-cols-1 gap-y-6 sm:grid-cols-3 sm:gap-x-4">
