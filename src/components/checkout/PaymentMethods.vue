@@ -20,38 +20,73 @@ const paymentMethods: ComputedRef<PaymentMethodWithSupportedCountries[]> = compu
     return []
   }
 
-  return (data.value as PaymentMethodWithSupportedCountries[]).filter((paymentMethod) => {
+  const paymentMethods = (data.value as PaymentMethodWithSupportedCountries[]).filter((paymentMethod) => {
     return paymentMethod.countries.includes(<string>countryCode.value)
   })
+
+  let result: PaymentMethodWithSupportedCountries[] = []
+
+  paymentMethods.forEach((paymentMethod) => {
+    const keys = paymentMethod.key.split('_');
+    keys.forEach(key => {
+      result.push({
+        ...paymentMethod,
+        key,
+      })
+    })
+  })
+
+  return result
 })
 
-const selectedPaymentMethod: Ref<PaymentMethodWithSupportedCountries | null> = ref(null)
-
 watch(paymentMethods, () => {
-  const isSelectedExistInUpdatedList = paymentMethods.value.findIndex((item) => item.key === selectedPaymentMethod.value?.key) != -1
+  const isSelectedExistInUpdatedList = paymentMethods.value.findIndex((item) => item.key === checkoutStore.selectedPaymentMethod?.key) != -1
 
-  if (!selectedPaymentMethod.value || !isSelectedExistInUpdatedList) {
-    selectedPaymentMethod.value = paymentMethods.value[0]
+  if (!checkoutStore.selectedPaymentMethod || !isSelectedExistInUpdatedList) {
+    checkoutStore.selectedPaymentMethod = paymentMethods.value[0]
   }
 })
 
-watch(selectedPaymentMethod, (selectedPaymentMethod, oldValue) => {
+watch(() => checkoutStore.selectedPaymentMethod, (selectedPaymentMethod, oldValue) => {
   if (selectedPaymentMethod?.key === 'bank-card' && oldValue) {
    setTimeout(() => {
      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth'});
    }, 10)
   }
 })
+
+const getColSpanClass = (idx: number) => {
+  idx++
+
+  const skipped = paymentMethods.value.length - (paymentMethods.value.length % 3)
+  const countItemsOnLastRow = paymentMethods.value.length - skipped
+
+  const position = idx % 3
+
+  if (countItemsOnLastRow < 1 || idx <= skipped) {
+    return '';
+  }
+
+  if (countItemsOnLastRow === 1) {
+    return 'col-span-3';
+  }
+
+  if (countItemsOnLastRow === 2) {
+    return 'col-span-' + (position === 1 ? 1 : 2);
+  }
+
+  return '';
+}
 </script>
 
 <template>
   <div class="mt-8 pt-8 border-t border-gray-200">
-    <RadioGroup v-model="selectedPaymentMethod">
+    <RadioGroup v-model="checkoutStore.selectedPaymentMethod">
       <RadioGroupLabel class="text-lg font-medium text-gray-900">Select payment method</RadioGroupLabel>
 
-      <div class="mt-4 grid grid-cols-1 gap-y-6 sm:grid-cols-3 sm:gap-x-4">
-        <RadioGroupOption v-if="!isFetching && !error" as="template" v-for="paymentMethod in paymentMethods" :key="paymentMethod.key" :value="paymentMethod" v-slot="{ checked, active }">
-          <div :class="[checked ? 'border-transparent' : 'border-gray-300', active ? 'ring-2 ring-indigo-500' : '', 'relative flex cursor-pointer rounded-lg border bg-white p-4 shadow-sm focus:outline-none']">
+      <div v-if="!isFetching && !error && paymentMethods" class="mt-4 grid grid-cols-1 gap-y-6 sm:grid-cols-3 sm:gap-x-4">
+        <RadioGroupOption as="template" v-for="(paymentMethod, idx) in paymentMethods" :key="paymentMethod.key" :value="paymentMethod" v-slot="{ checked, active }">
+          <div :class="[checked ? 'border-transparent' : 'border-gray-300', active ? 'ring-2 ring-indigo-500' : '', getColSpanClass(idx), 'relative flex cursor-pointer rounded-lg border bg-white p-4 shadow-sm focus:outline-none']">
               <span class="flex flex-1">
                 <span class="flex flex-col">
                   <RadioGroupLabel as="span" class="block text-sm font-medium text-gray-900">{{ $t('payment_methods.' + paymentMethod.key + '.title') }}</RadioGroupLabel>
@@ -63,13 +98,17 @@ watch(selectedPaymentMethod, (selectedPaymentMethod, oldValue) => {
           </div>
         </RadioGroupOption>
       </div>
+
+      <div v-if="!isFetching && !error && paymentMethods.length === 0" class="text-center border-2 border-dashed border-gray-300 p-12 rounded-lg">
+        <h3 class="mt-2 text-sm font-semibold text-red-500">No available payment methods for selected country</h3>
+      </div>
     </RadioGroup>
   </div>
 
-  <BankCardForm v-if="selectedPaymentMethod?.key === 'bank-card'" class="mt-8" />
+  <BankCardForm v-if="checkoutStore.selectedPaymentMethod?.key === 'bank-card'" class="mt-8" />
 
-  <button class="mt-8 w-full rounded-md border border-transparent bg-indigo-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
-          type="submit">
+  <button class="mt-8 w-full rounded-md border border-transparent bg-indigo-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 disabled:bg-indigo-400 disabled:cursor-not-allowed"
+          type="submit" :disabled="!checkoutStore.ready">
     Proceed to checkout
   </button>
 </template>
