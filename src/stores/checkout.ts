@@ -108,5 +108,11 @@ export const useCheckoutStore = defineStore('checkout', () => {
 
   const selectedPlan: Ref<Plan> = ref(plans.value[2])
 
-  return { plans, selectedPlan }
+  const countryCode: Ref<string | null> = ref(null)
+
+  const updateCountryCode = (code: string) => {
+    countryCode.value = code
+  }
+
+  return { plans, selectedPlan, countryCode, updateCountryCode }
 })

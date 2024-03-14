@@ -2,6 +2,7 @@ import {ref} from 'vue'
 import {defineStore} from 'pinia'
 import axios from "axios";
 import {useTradingAccountStore} from "@/stores/tradingAccount";
+import type {Country} from "@/api/types";
 
 interface Customer {
   id: bigint
@@ -10,6 +11,7 @@ interface Customer {
   fullName: string
   firstName: string
   lastName: string
+  country: Country | null
 }
 
 export const useAuthStore = defineStore('auth', () => {
@@ -36,6 +38,7 @@ export const useAuthStore = defineStore('auth', () => {
         fullName: data.first_name + ' ' + data.last_name,
         firstName: data.first_name,
         lastName: data.last_name,
+        country: data.country,
       }
 
       tradingAccountStore.setList(data.tradingAccounts)
