@@ -7,8 +7,8 @@
         <div class="lg:pl-72">
             <Header v-model="sidebarOpen" />
 
-            <main class="py-10">
-              <div v-if="authStore.customer" class="px-4 sm:px-6 lg:px-8">
+            <main>
+              <div v-if="authStore.customer">
                     <slot />
                 </div>
             </main>
@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, ref} from 'vue'
+import {computed, onMounted, ref, watch} from 'vue'
 
 import {
   CalendarIcon,
@@ -33,6 +33,7 @@ import DesktopSidebar from "@/components/sidebar/DesktopSidebar.vue";
 import Header from "@/components/sidebar/Header.vue";
 import {initFlowbite} from "flowbite";
 import {useAuthStore} from "@/stores/auth";
+import {useRoute} from "vue-router";
 
 const navigation = [
     { name: 'Dashboard', href: '/', icon: HomeIcon },
@@ -52,5 +53,7 @@ onMounted(() => {
 })
 
 const authStore = useAuthStore()
+
+const route = useRoute();
 
 </script>

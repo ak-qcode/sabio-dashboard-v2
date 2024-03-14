@@ -81,7 +81,7 @@ const {isFetching: isFetchingCountries, error, data: countries} = useFetch('/loc
             <option v-for="country in countries" :key="country.code" :value="country.code">{{ country.name }}</option>
           </select>
         </div>
-        <p class="text-red-500 text-sm mt-2" v-if="authStore.customer?.country?.code != formData.countryCode">You have changed country field. If you continue, the country will be changed in your profile also</p>
+        <p class="text-yellow-500 text-sm mt-2" v-if="authStore.customer?.country?.code != formData.countryCode">You have changed country field. If you continue, the country will be changed in your profile also</p>
       </div>
 
       <div class="col-span-full">

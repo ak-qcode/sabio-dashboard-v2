@@ -1,14 +1,14 @@
 import {defineStore} from 'pinia'
 import axios from "axios";
+import {notify} from "notiwind";
 
 export interface TradingAccount {
+  id: number,
+  account_id: number,
   login: bigint,
-  sabioEmail: string,
-  accountType: string,
-  status: string,
-  startingBalance: string,
-  accountId: number,
-  remainingDays: number,
+  sabio_user_id: bigint,
+  sabio_email: string,
+  display_name: string | null,
 }
 
 export interface DashboardData {
@@ -82,19 +82,49 @@ export const useTradingAccountStore = defineStore('tradingAccount', {
             this.autoSelectAccount()
           })
     },
-    fetchShow(accountId: number | bigint) {
-      axios.get('/trading-accounts/' + accountId)
+    fetchShow(id: number) {
+      axios.get('/trading-accounts/' + id)
           .then(res => res.data)
           .then(data => {
             this.dashboardData = data
           })
+    },
+    async getLink(id: number): string {
+      const response = await axios.get('/trading-accounts/' + id + '/link');
+
+      return response.data.traderoom_url
+    },
+    setName(id: number, newName: string) {
+      if (!newName.match(/^[a-zA-Z0-9\s]+$/)) {
+        notify({
+          title: "You can use letters, numbers, and spaces only",
+          text: "No special symbols or punctuation allowed",
+          type: "warning",
+        }, 5000)
+
+        return;
+      }
+
+      axios.patch('/trading-accounts/' + id, {
+        display_name: newName,
+      }).then(() => {
+        const account = this.tradingAccounts.find(a => a.id === id)
+        if (account) {
+          account.display_name = newName
+        }
+
+        notify({
+          title: "Trading account name has been updated",
+          type: "success",
+        }, 2500)
+      })
     },
     autoSelectAccount() {
       const selectedAccountId = localStorage.getItem('currentTradingAccountId')
       if (selectedAccountId) {
         this.selectAccount(+selectedAccountId)
       } else {
-        this.selectAccount(this.tradingAccounts[0].accountId)
+        this.selectAccount(this.tradingAccounts[0].id)
       }
     },
     setList(accounts: TradingAccount[]) {
@@ -102,11 +132,11 @@ export const useTradingAccountStore = defineStore('tradingAccount', {
 
       this.autoSelectAccount()
     },
-    selectAccount(accountId: number) {
-      this.currentAccount = this.tradingAccounts.find(a => a.accountId === accountId)
+    selectAccount(id: number) {
+      this.currentAccount = this.tradingAccounts.find(a => a.id === id)
 
       if (this.currentAccount) {
-        localStorage.setItem('currentTradingAccountId', accountId.toString())
+        localStorage.setItem('currentTradingAccountId', id.toString())
       }
     }
   }
