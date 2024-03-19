@@ -1,19 +1,28 @@
 <script lang="ts" setup>
 import {useAuthStore} from "@/stores/auth";
 import useFetch from "@/api/useFetch";
+import {reactive, watch} from "vue";
+import {useCheckoutStore} from "@/stores/checkout";
 
 const authStore = useAuthStore();
+const checkoutStore = useCheckoutStore();
 
-const formData = {
+const formData = reactive({
   firstName: authStore.customer?.firstName || "",
   lastName: authStore.customer?.lastName || "",
   phoneNumber: "",
   email: authStore.customer?.email || "",
-  countryCode: "CA",
+  countryCode: checkoutStore.countryCode || authStore.customer?.country?.code,
   city: "",
   addressLine: "",
   postalCode: "",
-}
+})
+
+watch(() => formData.countryCode, () => {
+  if (formData.countryCode) {
+    checkoutStore.updateCountryCode(formData.countryCode)
+  }
+})
 
 const {isFetching: isFetchingCountries, error, data: countries} = useFetch('/locations/countries').get().json()
 
@@ -72,6 +81,7 @@ const {isFetching: isFetchingCountries, error, data: countries} = useFetch('/loc
             <option v-for="country in countries" :key="country.code" :value="country.code">{{ country.name }}</option>
           </select>
         </div>
+        <p class="text-yellow-500 text-sm mt-2" v-if="authStore.customer?.country?.code != formData.countryCode">You have changed country field. If you continue, the country will be changed in your profile also</p>
       </div>
 
       <div class="col-span-full">

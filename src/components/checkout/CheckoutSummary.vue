@@ -136,8 +136,8 @@ const applyCoupon = (e: Event) => {
       </dl>
 
       <div class="border-t border-gray-200 px-4 py-6 sm:px-6">
-        <button class="w-full rounded-md border border-transparent bg-indigo-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
-                type="submit">
+        <button class="w-full rounded-md border border-transparent bg-indigo-600 disabled:bg-indigo-400 disabled:cursor-not-allowed px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+                type="submit" :disabled="!checkoutStore.ready">
           Proceed to checkout
         </button>
       </div>

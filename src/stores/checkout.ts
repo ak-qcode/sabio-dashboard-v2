@@ -1,7 +1,7 @@
-import type {Ref} from 'vue'
+import {computed, type Ref} from 'vue'
 import {ref} from 'vue'
 import {defineStore} from 'pinia'
-import type {Plan} from "@/api/types";
+import type {PaymentMethodWithSupportedCountries, Plan} from "@/api/types";
 import {formatMoney} from "@/utils/numberFormatter";
 
 export const useCheckoutStore = defineStore('checkout', () => {
@@ -108,5 +108,15 @@ export const useCheckoutStore = defineStore('checkout', () => {
 
   const selectedPlan: Ref<Plan> = ref(plans.value[2])
 
-  return { plans, selectedPlan }
+  const selectedPaymentMethod: Ref<PaymentMethodWithSupportedCountries | null> = ref(null)
+
+  const countryCode: Ref<string | null> = ref(null)
+
+  const updateCountryCode = (code: string) => {
+    countryCode.value = code
+  }
+
+  const ready = computed(() => !!(selectedPaymentMethod.value && selectedPlan.value))
+
+  return { plans, selectedPlan, countryCode, updateCountryCode, selectedPaymentMethod, ready }
 })

@@ -1,6 +1,7 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import TradingDashboardView from '../views/TradingDashboardView.vue'
 import LoginView from '../views/LoginView.vue'
+import TradeRoomView from "@/views/TradeRoomView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,6 +18,14 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: LoginView
+    },
+    {
+      path: '/traderoom',
+      name: 'traderoom',
+      component: TradeRoomView,
+      meta: {
+        requiresAuth: true,
+      }
     },
     {
       path: '/checkout',

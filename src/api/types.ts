@@ -10,3 +10,13 @@ export interface PlanSpec {
   key: string,
   value: string | number,
 }
+
+export interface PaymentMethodWithSupportedCountries {
+  key: string,
+  countries: string[],
+}
+
+export interface Country {
+  code: string,
+  name: string | null,
+}
