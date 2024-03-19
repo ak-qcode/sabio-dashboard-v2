@@ -143,7 +143,7 @@ const navigateToCheckout = () => {
           <dd class="text-xl text-white font-medium">{{ formatMoney(orderAmount) }}</dd>
         </div>
         <div class="flex justify-center">
-          <Button class="mt-5" type="button" @click="navigateToCheckout">Proceed to Checkout</Button>
+          <Button class="mt-5" type="submit" :disabled="!checkoutStore.ready">Proceed to Checkout</Button>
         </div>
 
       </dl>
