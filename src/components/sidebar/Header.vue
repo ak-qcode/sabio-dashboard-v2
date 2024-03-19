@@ -2,8 +2,12 @@
 
 import {Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/vue";
 import {ChevronDownIcon, MagnifyingGlassIcon} from "@heroicons/vue/20/solid";
-import {Bars3Icon, BellIcon} from "@heroicons/vue/24/outline";
+import {Bars3Icon} from "@heroicons/vue/24/outline";
 import {useAuthStore} from "@/stores/auth";
+import BellIcon from '@/components/ui/icons/BellIcon.vue'
+import ChevronDown from '@/components/ui/icons/ChevronDown.vue'
+import {useTradingAccountStore} from "@/stores/tradingAccount";
+import { ref, onMounted } from 'vue';
 
 const sidebarOpen = defineModel();
 
@@ -13,53 +17,78 @@ const userNavigation = [
     { name: 'Your profile', href: '#' },
     { name: 'Sign out', href: '#', onClick: authStore.logOut },
 ]
+defineProps([
+    'navigation',
+])
+
+const tradingAccountStore = useTradingAccountStore();
+
+const isOpen = ref(false);
+
+const toggleDropdown = () => {
+  isOpen.value = !isOpen.value;
+};
+
+const selectAccount = (account) => {
+  tradingAccountStore.currentAccount = account;
+  isOpen.value = false;
+};
+
+onMounted(() => {
+  if (tradingAccountStore.tradingAccounts.length > 0 && !tradingAccountStore.currentAccount) {
+    tradingAccountStore.currentAccount = tradingAccountStore.tradingAccounts[0];
+  }
+});
+
+
 </script>
 
 <template>
-    <div class="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
+    <div class=" flex w-full h-14 shrink-0 items-center gap-x-4 bg-black px-3 shadow-sm sm:gap-x-6">
         <button type="button" class="-m-2.5 p-2.5 text-gray-700 lg:hidden" @click="sidebarOpen = true">
             <span class="sr-only">Open sidebar</span>
             <Bars3Icon class="h-6 w-6" aria-hidden="true" />
         </button>
 
         <!-- Separator -->
-        <div class="h-6 w-px bg-gray-900/10 lg:hidden" aria-hidden="true" />
+        <div class="h-6 w-px lg:hidden" aria-hidden="true"></div>
 
-        <div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
-            <form class="relative flex flex-1" action="#" method="GET">
+        <div class="flex flex-1 gap-x-4 justify-between lg:gap-x-6">
+            <!-- <form class="relative flex flex-1" action="#" method="GET">
                 <label for="search-field" class="sr-only">Search</label>
-                <MagnifyingGlassIcon class="pointer-events-none absolute inset-y-0 left-0 h-full w-5 text-gray-400" aria-hidden="true" />
-                <input id="search-field" class="block h-full w-full border-0 py-0 pl-8 pr-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm" placeholder="Search..." type="search" name="search" />
-            </form>
-
-            <div class="flex items-center gap-x-4 lg:gap-x-6">
-                <button type="button" class="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500">
+                <MagnifyingGlassIcon class="pointer-events-none absolute inset-y-0 left-0 h-full w-5 text-dop-color" aria-hidden="true" />
+                <input id="search-field" class="block bg-black h-full w-full border-0 py-0 pl-8 pr-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm" placeholder="Search..." type="search" name="search" />
+            </form> -->
+            <div class="flex shrink-0 items-center">
+                <a href="https://sabiotrade.com/" target="_blank">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M0.135512 13.8C0.0462617 13.2129 0 12.6118 0 12C0 5.37258 5.42914 0 12.1263 0C16.8607 0 20.9614 2.68491 22.9584 6.6H18.6286C17.0715 4.76583 14.7365 3.6 12.1263 3.6C8.06265 3.6 4.66592 6.42578 3.83324 10.2H24.1171C24.2064 10.7871 24.2526 11.3882 24.2526 12C24.2526 18.6274 18.8235 24 12.1263 24C7.38392 24 3.27736 21.306 1.28413 17.3801L5.55214 17.3142C6.74213 18.7541 8.40563 19.7958 10.3074 20.2067V13.8H0.135512ZM13.9453 20.2067C17.1733 19.5093 19.7147 16.9943 20.4194 13.8H13.9453V20.2067Z" fill="white"/>
+                    </svg>
+                </a>
+                
+            </div>
+            <!-- <div class="text-xs font-semibold leading-6 text-indigo-200">Your trading accounts</div> -->
+            <div class="relative min-w-40">
+                <button @click="toggleDropdown" class="text-dop-color border border-white-opacity-color group flex gap-x-3 items-center rounded-md p-2 text-sm font-semibold  hover:bg-indigo-700">
+                <span>{{ tradingAccountStore.currentAccount ? 'Standard — ' + tradingAccountStore.currentAccount.login : 'Select Account' }}</span>
+                <ChevronDown :class="{'svg-rotate': isOpen}"/>
+                </button>
+                <ul v-if="isOpen" class="space-y-1 text-dop-color shadow-md border border-white-opacity-color rounded-md absolute w-full z-10" role="list">
+                    <li v-for="account in tradingAccountStore.tradingAccounts" :key="account.accountId">
+                        <button
+                        :class="[tradingAccountStore.currentAccount?.accountId === account.accountId ? 'bg-indigo-700 text-white' : 'text-indigo-200 hover:text-white hover:bg-indigo-700', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold w-full']"
+                        @click="selectAccount(account)"
+                        >
+                        <span class="truncate">Standard —  {{ account.login }}</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+            <div class="flex items-center">
+                <button type="button" class="p-2 bg-grey-color hover:text-gray-500 border border-white border-opacity-5 rounded-md">
                     <span class="sr-only">View notifications</span>
                     <BellIcon class="h-6 w-6" aria-hidden="true" />
                 </button>
-
-                <!-- Separator -->
-                <div class="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-900/10" aria-hidden="true" />
-
-                <!-- Profile dropdown -->
-                <Menu as="div" class="relative">
-                    <MenuButton class="-m-1.5 flex items-center p-1.5">
-                        <span class="sr-only">Open user menu</span>
-                        <img class="h-8 w-8 rounded-full bg-gray-50" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
-                        <span class="hidden lg:flex lg:items-center">
-                  <span aria-hidden="true"
-                        class="ml-4 text-sm font-semibold leading-6 text-gray-900">{{ authStore.customer?.fullName || 'Loading ...' }}</span>
-                  <ChevronDownIcon class="ml-2 h-5 w-5 text-gray-400" aria-hidden="true" />
-                </span>
-                    </MenuButton>
-                    <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
-                        <MenuItems class="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
-                            <MenuItem v-for="item in userNavigation" :key="item.name" v-slot="{ active }" @click="item.onClick">
-                                <a :href="item.href" :class="[active ? 'bg-gray-50' : '', 'block px-3 py-1 text-sm leading-6 text-gray-900']">{{ item.name }}</a>
-                            </MenuItem>
-                        </MenuItems>
-                    </transition>
-                </Menu>
             </div>
         </div>
     </div>
