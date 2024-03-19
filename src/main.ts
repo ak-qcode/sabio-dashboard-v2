@@ -42,7 +42,10 @@ const tolgee = Tolgee()
       apiKey: import.meta.env.VITE_APP_TOLGEE_API_KEY,
 
       // for production
-   
+      staticData: {
+        en: () => import('../i18n/en.json'),
+        fr: () => import('../i18n/fr.json'),
+      },
     });
 
 app.use(VueTolgee, { tolgee });
