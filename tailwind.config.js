@@ -12,6 +12,7 @@ export default {
       'white-opacity-color': '#1F1F1F',
       'dark-blue-color': '#000B36',
       'blue-color': '#0C1A98',
+      'light-blue-color': '#5877FF',
       'accent-green-color': '#17F871',
     },
     fontFamily: {

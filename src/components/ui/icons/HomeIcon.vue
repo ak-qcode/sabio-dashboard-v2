@@ -27,9 +27,3 @@
   </defs>
 </svg>
 </template>
-
-<script>
-export default {
-  name: 'HomeIcon',
-};
-</script>

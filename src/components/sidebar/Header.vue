@@ -70,16 +70,16 @@ onMounted(() => {
             <!-- <div class="text-xs font-semibold leading-6 text-indigo-200">Your trading accounts</div> -->
             <div class="relative min-w-40">
                 <button @click="toggleDropdown" class="text-dop-color border border-white-opacity-color group flex gap-x-3 items-center rounded-md p-2 text-sm font-semibold  hover:bg-indigo-700">
-                <span>{{ tradingAccountStore.currentAccount ? 'Standard — ' + tradingAccountStore.currentAccount.login : 'Select Account' }}</span>
+                <span>{{ tradingAccountStore.currentAccount ? 'Unnamed # — ' + tradingAccountStore.currentAccount.login : 'Select Account' }}</span>
                 <ChevronDown :class="{'svg-rotate': isOpen}"/>
                 </button>
-                <ul v-if="isOpen" class="space-y-1 text-dop-color shadow-md border border-white-opacity-color rounded-md absolute w-full z-10" role="list">
-                    <li v-for="account in tradingAccountStore.tradingAccounts" :key="account.accountId">
+                <ul v-if="isOpen" class="space-y-1 text-dop-color shadow-md border border-white-opacity-color rounded-md absolute w-full z-10 bg-black" role="list">
+                    <li v-for="account in tradingAccountStore.tradingAccounts" :key="account.id">
                         <button
-                        :class="[tradingAccountStore.currentAccount?.accountId === account.accountId ? 'bg-indigo-700 text-white' : 'text-indigo-200 hover:text-white hover:bg-indigo-700', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold w-full']"
+                        :class="[tradingAccountStore.currentAccount?.accountId === account.id ? 'bg-indigo-700 text-white' : 'text-indigo-200 hover:text-white hover:bg-indigo-700', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold w-full']"
                         @click="selectAccount(account)"
                         >
-                        <span class="truncate">Standard —  {{ account.login }}</span>
+                        <span class="truncate">{{ account.display_name || 'Unnamed # — ' + account.login }}</span>
                         </button>
                     </li>
                 </ul>

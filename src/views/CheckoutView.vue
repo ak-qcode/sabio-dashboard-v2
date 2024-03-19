@@ -10,14 +10,14 @@ import PaymentMethods from "@/components/checkout/PaymentMethods.vue";
 
 <template>
   <DashboardLayout>
-    <div class="lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16">
+    <div class="lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16 pt-16">
       <div class="md:max-w-[679px]">
         <Plans class="border-b border-gray-900/10 pb-8"/>
         <BillingDetails class="mt-8"/>
         <PaymentMethods />
       </div>
       <div class="md:max-w-[679px]">
-        <CheckoutSummary />
+        <CheckoutSummary class="mt-10"/>
       </div>
     </div>
   </DashboardLayout>

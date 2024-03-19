@@ -5,12 +5,6 @@
   </svg>
   </template>
   
-  <script>
-  export default {
-    name: 'ChevronDown',
-  };
-  </script>
-
 <style scoped>
   svg {
     transform: rotate(0deg);

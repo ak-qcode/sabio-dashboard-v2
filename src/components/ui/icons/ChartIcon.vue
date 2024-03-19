@@ -75,9 +75,3 @@
   </defs>
 </svg>
 </template>
-
-<script>
-export default {
-  name: 'ChartIcon',
-};
-</script>

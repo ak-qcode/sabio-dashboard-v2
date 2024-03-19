@@ -37,6 +37,14 @@ import {
 import HomeIcon from '@/components/ui/icons/HomeIcon.vue'
 import ChartIcon from '@/components/ui/icons/ChartIcon.vue'
 import UsersIcon from '@/components/ui/icons/UsersIcon.vue'
+import TradingDashboardIcon from '@/components/ui/icons/TradingDashboardIcon.vue'
+import AccountsIcon from '@/components/ui/icons/AccountsIcon.vue'
+import CheckoutIcon from '@/components/ui/icons/CheckoutIcon.vue'
+import PayoutsIcon from '@/components/ui/icons/PayoutsIcon.vue'
+import EducationIcon from '@/components/ui/icons/EducationIcon.vue'
+import StarsIcon from '@/components/ui/icons/StarsIcon.vue'
+import CertificatesIcon from '@/components/ui/icons/CertificatesIcon.vue'
+import CommunityIcon from '@/components/ui/icons/CommunityIcon.vue'
 
 import MobileSidebar from "@/components/sidebar/MobileSidebar.vue";
 import DesktopSidebar from "@/components/sidebar/DesktopSidebar.vue";
@@ -46,14 +54,19 @@ import {initFlowbite} from "flowbite";
 import {useAuthStore} from "@/stores/auth";
 
 const navigation = [
-    { name: 'Dashboard', href: '/', icon: HomeIcon },
-    { name: 'Login', href: '/login', icon: HomeIcon },
-    { name: 'Checkout', href: '/checkout', icon: UsersIcon },
-    { name: 'TradeRoom', href: '/traderoom', icon: UsersIcon },
-    { name: 'Projects', href: '/projects', icon: FolderIcon },
-    { name: 'Calendar', href: '/calendar', icon: CalendarIcon },
-    { name: 'Documents', href: '/documents', icon: DocumentDuplicateIcon },
-    { name: 'Reports', href: '/reports', icon: ChartPieIcon },
+    { name: 'SabioVerse', href: '/sabioverse', icon: HomeIcon },
+    { name: 'TradeRoom', href: '/traderoom', icon: ChartIcon },
+    { name: 'Trading Dashboard', href: '/', icon: TradingDashboardIcon },
+    { name: 'Login', href: '/login', icon: UsersIcon },
+    { name: 'Profile', href: '/profile', icon: UsersIcon },
+    { name: 'My accounts', href: '/accounts', icon: AccountsIcon },
+    { name: 'Checkout', href: '/checkout', icon: CheckoutIcon },
+    { name: 'Payouts', href: '/payouts', icon: PayoutsIcon },
+    { name: 'Competition', href: '/competition', icon: EducationIcon },
+    { name: 'Education', href: '/education', icon: EducationIcon },
+    { name: 'Trading Psychology', href: '/tradingpsychology', icon: StarsIcon },
+    { name: 'Certificates', href: '/certificates', icon: CertificatesIcon },
+    { name: 'Community', href: '/community', icon: CommunityIcon },
 ]
 
 const sidebarOpen = ref(false)

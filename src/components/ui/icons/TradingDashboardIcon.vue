@@ -81,9 +81,3 @@
   </defs>
 </svg>
 </template>
-
-<script>
-export default {
-  name: 'TradingDashboardIcon',
-};
-</script>
