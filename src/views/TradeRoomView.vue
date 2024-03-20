@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {useTradingAccountStore} from "@/stores/tradingAccount";
 import {onMounted, type Ref, ref, watch} from "vue";
-import FullScreenLayout from "@/layouts/FullScreenLayout.vue";
+import DashboardLayout from "@/layouts/DashboardLayout.vue";
 
 const tradingAccountStore = useTradingAccountStore();
 
@@ -19,9 +19,9 @@ watch(() => tradingAccountStore.currentAccount, callback)
 
 </script>
 <template>
-    <FullScreenLayout>
+    <DashboardLayout>
       <iframe v-if="url" :src="url" class="w-full aspect-video" />
       <p v-else>Loading TradeRoom ...</p>
-    </FullScreenLayout>
+    </DashboardLayout>
 </template>
 

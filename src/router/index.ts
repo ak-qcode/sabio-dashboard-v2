@@ -1,5 +1,5 @@
 import {createRouter, createWebHistory} from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import TradingDashboardView from '../views/TradingDashboardView.vue'
 import LoginView from '../views/LoginView.vue'
 import TradeRoomView from "@/views/TradeRoomView.vue";
 
@@ -8,8 +8,8 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: HomeView,
+      name: 'tradingdashboard',
+      component: () => import('../views/TradingDashboardView.vue'),
       meta: {
         requiresAuth: true,
       }

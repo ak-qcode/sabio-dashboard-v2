@@ -5,6 +5,11 @@ import {onMounted, ref, watch} from "vue";
 import {Switch, SwitchGroup, SwitchLabel} from '@headlessui/vue'
 import ApexCharts from "apexcharts";
 import GeneralInfo from "@/components/dashboard/GeneralInfo.vue";
+import Statistic from "@/components/dashboard/Statistic.vue";
+import Banner from "@/components/dashboard/Banner.vue";
+import ProfitTarget from "@/components/dashboard/ProfitTarget.vue";
+import bgImage from '@/assets/gradient-chart.png';
+
 
 const tradingAccountStore = useTradingAccountStore();
 
@@ -19,6 +24,9 @@ const options = {
     dropShadow: {
       enabled: false,
     },
+    stroke: {
+      curve: 'straight',
+    },
     toolbar: {
       show: false,
     },
@@ -32,14 +40,29 @@ const options = {
   fill: {
     type: "gradient",
     gradient: {
-      opacityFrom: 0.55,
-      opacityTo: 0,
-      shade: "#1C64F2",
-      gradientToColors: ["#1C64F2"],
-    },
+      shadeIntensity: 1,
+      opacityFrom: 0.7,
+      opacityTo: 0.9,
+      stops: [0, 90, 100],
+      colorStops: [
+        {
+          offset: 0,
+          color: "#4DF2FF",
+          opacity: 1
+        },
+        {
+          offset: 100,
+          color: "#1301FF",
+          opacity: 1
+        }
+      ]
+    }
   },
   dataLabels: {
     enabled: false,
+    style: {
+      colors: ['#ffffff']
+    },
   },
   stroke: {
     width: 6,
@@ -64,15 +87,25 @@ const options = {
     show: true,
     title: {
       text: "Balance",
+      style: {
+        color: '#B9BADB',
+      },
     },
     labels: {
       show: true,
+      style: {
+        colors: ['#ffffff']
+      }
     }
   },
   xaxis: {
+    show: true,
     categories: [] as string[],
-    labels: {
-      show: true,
+    title: {
+      text: 'Trade Date',
+      style: {
+        color: '#B9BADB',
+      },
     },
     axisBorder: {
       show: true,
@@ -80,6 +113,12 @@ const options = {
     axisTicks: {
       show: false,
     },
+    labels: {
+      show: true,
+      style: {
+        colors: '#ffffff'
+      }
+    }
   },
 }
 
@@ -159,49 +198,54 @@ const handleSetName = (e: Event) => { // FIXME: remove it
     <DashboardLayout>
       <SwitchGroup as="div" class="flex items-center mb-4">
         <Switch v-model="useTestData"
-                :class="[useTestData ? 'bg-indigo-600' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2']">
+                :class="[useTestData ? 'bg-indigo-600' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent  transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2']">
           <span aria-hidden="true"
-                :class="[useTestData ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']"/>
+                :class="[useTestData ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full shadow ring-0 transition duration-200 ease-in-out bg-accent-green-color']"/>
         </Switch>
         <SwitchLabel as="span" class="ml-3 text-sm">
-          <span class="font-medium text-gray-900">Use test data for chart</span>
+          <span class="font-medium text-white">Use test data for chart</span>
         </SwitchLabel>
       </SwitchGroup>
 
-      <div v-if="tradingAccountStore.currentAccount">
-        <GeneralInfo :data="tradingAccountStore.dashboardData"/>
+      <div v-if="tradingAccountStore.currentAccount" class="pb-8">
+        <section class="flex gap-4 xl:gap-6 flex-col lg:flex-row my-6">
+          <GeneralInfo :data="tradingAccountStore.dashboardData"/>
+          <Banner />
+        </section>
+        <section class="flex gap-4 xl:gap-6 flex-col lg:flex-row my-6">
+          <ProfitTarget :data="tradingAccountStore.dashboardData"/>
+          <Statistic :data="tradingAccountStore.dashboardData"/>
+        </section>
 
-        <hr class="my-6">
-
-        <div class="w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
-          <div class="flex justify-end gap-12 items-center">
+        <div class="w-full rounded-lg shadow dark:bg-gray-800 p-4 md:p-8 border border-white border-opacity-5 bg-no-repeat bg-cover" :style="{ backgroundImage: `url(${bgImage})` }">
+          <div class="flex justify-end gap-12 items-center md:px-4">
             <div>
-              <h5 class="leading-none text-gray-500 dark:text-gray-400 pb-2">Max Permitted Loss</h5>
-              <p class="text-gray-900 dark:text-white">{{ useTestData ? "$800.00" : "?" }}</p>
+              <h5 class="leading-none text-dop-color text-xs dark:text-gray-400 pb-2">Max Permitted Loss</h5>
+              <p class="text-white text-lg dark:text-white">{{ useTestData ? "$800.00" : "?" }}</p>
             </div>
             <div>
-              <h5 class="text-gray-500 dark:text-gray-400 pb-2">Today's Permitted Loss</h5>
-              <p class="text-gray-900 dark:text-white">{{ useTestData ? "$500.00" : "?" }}</p>
+              <h5 class="text-dop-color text-xs dark:text-gray-400 pb-2">Today's Permitted Loss</h5>
+              <p class="text-white text-lg dark:text-white">{{ useTestData ? "$500.00" : "?" }}</p>
             </div>
             <div>
-              <h5 class="text-gray-500 dark:text-gray-400 pb-2">Today's Profit</h5>
-              <p class="text-gray-900 dark:text-white">{{ useTestData ? "$12.00" : "?" }}</p>
+              <h5 class="text-dop-color text-xs dark:text-gray-400 pb-2">Today's Profit</h5>
+              <p class="text-white text-lg dark:text-white">{{ useTestData ? "$12.00" : "?" }}</p>
             </div>
           </div>
-          <div id="area-chart"></div>
+          <div id="area-chart" class="pt-4"></div>
         </div>
 
         <hr class="my-6">
 
         <div class="w-full sm:w-fit">
-          <h3 class="font-semibold text-lg">Update name of the selected trading account</h3>
+          <h3 class="font-semibold text-lg text-white">Update name of the selected trading account</h3>
           <form @submit="handleSetName" class="mt-3">
             <div>
-              <label for="displayName" class="block text-sm font-medium leading-6 text-gray-900">Email</label>
+              <label for="displayName" class="block text-sm font-medium leading-6 text-white">Email</label>
               <div class="mt-2">
                 <input type="text" v-model="newName" placeholder="Rocket to the moon" id="displayName" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
               </div>
-              <p class="mt-2 text-sm text-gray-500" id="email-description">You can use letters, numbers, and spaces only. No special symbols or punctuation.</p>
+              <p class="mt-2 text-sm text-dop-color" id="email-description">You can use letters, numbers, and spaces only. No special symbols or punctuation.</p>
             </div>
             <button type="submit" class="rounded-md bg-indigo-600 mt-3 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Update</button>
           </form>

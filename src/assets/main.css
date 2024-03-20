@@ -3,7 +3,11 @@
 @tailwind utilities;
 
 html {
-    @apply h-full bg-gray-50;
+    @apply min-h-screen bg-black;
+}
+
+body {
+    @apply min-h-screen bg-gradient-to-b from-black to-blue-700;
 }
 
 nav .router-link-active {  /* router-link-exact-active */
