@@ -5,7 +5,6 @@ import { ExclamationCircleIcon } from '@heroicons/vue/20/solid'
 import {formatMoney} from "@/utils/numberFormatter";
 import {useCheckoutStore} from "@/stores/checkout";
 import Button from '@/components/ui/Button/Button.vue';
-import { useRouter } from 'vue-router';
 
 const checkoutStore = useCheckoutStore()
 
@@ -68,12 +67,6 @@ const applyCoupon = (e: Event) => {
     couponApplying.value = false
   })
 }
-
-const router = useRouter();
-const navigateToCheckout = () => {
-  router.push({ name: 'checkout' });
-};
-
 
 </script>
 
