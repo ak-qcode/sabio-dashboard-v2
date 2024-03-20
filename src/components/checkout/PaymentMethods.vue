@@ -82,14 +82,14 @@ const getColSpanClass = (idx: number) => {
 <template>
   <div class="mt-8 pt-8 border-t border-gray-200">
     <RadioGroup v-model="checkoutStore.selectedPaymentMethod" by="key">
-      <RadioGroupLabel class="text-lg font-medium text-gray-900">Select payment method</RadioGroupLabel>
+      <RadioGroupLabel class="text-lg font-medium text-white">Choose payment method</RadioGroupLabel>
 
       <div v-if="!isFetching && !error && paymentMethods" class="mt-4 grid grid-cols-1 gap-y-6 sm:grid-cols-3 sm:gap-x-4">
         <RadioGroupOption as="template" v-for="(paymentMethod, idx) in paymentMethods" :key="paymentMethod.key" :value="paymentMethod" v-slot="{ checked, active }">
           <div :class="[checked ? 'border-transparent' : 'border-gray-300', active ? 'ring-2 ring-indigo-500' : '', getColSpanClass(idx), 'relative flex cursor-pointer rounded-lg border bg-white p-4 shadow-sm focus:outline-none']">
               <span class="flex flex-1">
                 <span class="flex flex-col">
-                  <RadioGroupLabel as="span" class="block text-sm font-medium text-gray-900">{{ $t('payment_methods.' + paymentMethod.key + '.title') }}</RadioGroupLabel>
+                  <RadioGroupLabel as="span" class="block text-sm font-medium text-white">{{ $t('payment_methods.' + paymentMethod.key + '.title') }}</RadioGroupLabel>
                   <RadioGroupDescription as="span" class="mt-1 flex items-center text-sm text-gray-500">{{ $t('payment_methods.' + paymentMethod.key + '.body') }}</RadioGroupDescription>
                 </span>
               </span>
@@ -107,8 +107,4 @@ const getColSpanClass = (idx: number) => {
 
   <BankCardForm v-if="checkoutStore.selectedPaymentMethod?.key === 'bank-card'" class="mt-8" />
 
-  <button class="mt-8 w-full rounded-md border border-transparent bg-indigo-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 disabled:bg-indigo-400 disabled:cursor-not-allowed"
-          type="submit" :disabled="!checkoutStore.ready">
-    Proceed to checkout
-  </button>
 </template>

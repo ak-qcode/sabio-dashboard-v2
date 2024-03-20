@@ -18,7 +18,7 @@ function onClick(event: MouseEvent) {
 
 <template>
   <button
-    class="rounded-xl border border-white border-opacity-10 bg-gradient-to-r from-dark-blue-color to-blue-color px-6 py-3 text-lg font-medium text-white shadow-sm hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+    class="rounded-xl border border-white border-opacity-40 bg-gradient-to-r from-dark-blue-color to-blue-color px-6 py-3 text-lg font-medium text-white shadow-sm hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
     :type="props.type"
     @click="onClick">
       <slot/>
