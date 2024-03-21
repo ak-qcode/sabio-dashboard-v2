@@ -89,10 +89,18 @@ export const useTradingAccountStore = defineStore('tradingAccount', {
             this.dashboardData = data
           })
     },
-    async getLink(id: number): string {
-      const response = await axios.get('/trading-accounts/' + id + '/link');
-
-      return response.data.traderoom_url
+    async getLink(id: number): Promise<string> {
+      return new Promise((resolve, reject) => {
+        axios.get('/trading-accounts/' + id + '/link')
+            .then(res => res.data)
+            .then(data => {
+              if (data.traderoom_url) {
+                resolve(data.traderoom_url)
+              } else {
+                reject("traderoom_url is empty")
+              }
+            }).catch(error => reject(error))
+      })
     },
     setName(id: number, newName: string) {
       if (!newName.match(/^[a-zA-Z0-9\s]+$/)) {
@@ -105,18 +113,27 @@ export const useTradingAccountStore = defineStore('tradingAccount', {
         return;
       }
 
+      let oldName: string | null = null
+
+      const account = this.tradingAccounts.find(a => a.id === id)
+      if (account) {
+        oldName = account.display_name
+        account.display_name = newName
+      }
+
       axios.patch('/trading-accounts/' + id, {
         display_name: newName,
       }).then(() => {
-        const account = this.tradingAccounts.find(a => a.id === id)
-        if (account) {
-          account.display_name = newName
-        }
-
         notify({
           title: "Trading account name has been updated",
           type: "success",
         }, 2500)
+      }).catch((error) => {
+        if (account) {
+          account.display_name = oldName
+        }
+
+        throw error
       })
     },
     autoSelectAccount() {

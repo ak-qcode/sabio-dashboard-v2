@@ -6,7 +6,7 @@ import {Bars3Icon} from "@heroicons/vue/24/outline";
 import {useAuthStore} from "@/stores/auth";
 import BellIcon from '@/components/ui/icons/BellIcon.vue'
 import ChevronDown from '@/components/ui/icons/ChevronDown.vue'
-import {useTradingAccountStore} from "@/stores/tradingAccount";
+import {type TradingAccount, useTradingAccountStore} from "@/stores/tradingAccount";
 import { ref, onMounted } from 'vue';
 
 const sidebarOpen = defineModel();
@@ -29,7 +29,7 @@ const toggleDropdown = () => {
   isOpen.value = !isOpen.value;
 };
 
-const selectAccount = (account) => {
+const selectAccount = (account: TradingAccount) => {
   tradingAccountStore.currentAccount = account;
   isOpen.value = false;
 };
@@ -65,7 +65,7 @@ onMounted(() => {
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M0.135512 13.8C0.0462617 13.2129 0 12.6118 0 12C0 5.37258 5.42914 0 12.1263 0C16.8607 0 20.9614 2.68491 22.9584 6.6H18.6286C17.0715 4.76583 14.7365 3.6 12.1263 3.6C8.06265 3.6 4.66592 6.42578 3.83324 10.2H24.1171C24.2064 10.7871 24.2526 11.3882 24.2526 12C24.2526 18.6274 18.8235 24 12.1263 24C7.38392 24 3.27736 21.306 1.28413 17.3801L5.55214 17.3142C6.74213 18.7541 8.40563 19.7958 10.3074 20.2067V13.8H0.135512ZM13.9453 20.2067C17.1733 19.5093 19.7147 16.9943 20.4194 13.8H13.9453V20.2067Z" fill="white"/>
                     </svg>
                 </a>
-                
+
             </div>
             <!-- <div class="text-xs font-semibold leading-6 text-indigo-200">Your trading accounts</div> -->
             <div class="relative min-w-40">
@@ -76,10 +76,10 @@ onMounted(() => {
                 <ul v-if="isOpen" class="space-y-1 text-dop-color shadow-md border border-white-opacity-color rounded-md absolute w-full z-10 bg-black" role="list">
                     <li v-for="account in tradingAccountStore.tradingAccounts" :key="account.id">
                         <button
-                        :class="[tradingAccountStore.currentAccount?.accountId === account.id ? 'bg-indigo-700 text-white' : 'text-indigo-200 hover:text-white hover:bg-indigo-700', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold w-full']"
+                        :class="[tradingAccountStore.currentAccount?.id === account.id ? 'bg-indigo-700 text-white' : 'text-indigo-200 hover:text-white hover:bg-indigo-700', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold w-full']"
                         @click="selectAccount(account)"
                         >
-                        <span class="truncate">{{ account.display_name || 'Unnamed # — ' + account.login }}</span>
+                        <span class="truncate">{{ account.display_name || 'Unnamed #' + account.login }}</span>
                         </button>
                     </li>
                 </ul>
