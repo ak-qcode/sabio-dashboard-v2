@@ -21,6 +21,13 @@ const router = createRouter({
     },
     {
       path: '/traderoom',
+      component: TradeRoomView,
+      meta: {
+        requiresAuth: true,
+      }
+    },
+    {
+      path: '/traderoom/:tradingAccountId',
       name: 'traderoom',
       component: TradeRoomView,
       meta: {
@@ -31,6 +38,14 @@ const router = createRouter({
       path: '/checkout',
       name: 'checkout',
       component: () => import('../views/CheckoutView.vue'),
+      meta: {
+        requiresAuth: true,
+      }
+    },
+    {
+      path: '/accounts',
+      name: 'trading-accounts',
+      component: () => import('../views/MyAccountsView.vue'),
       meta: {
         requiresAuth: true,
       }

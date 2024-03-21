@@ -1,0 +1,27 @@
+{
+  "login" : {
+    "title" : "Sign in to your account"
+  },
+  "payment_methods" : {
+    "bank-card" : {
+      "body" : "via Checkout.com",
+      "title" : "Credit / Debit card"
+    },
+    "cryptopay" : {
+      "body" : "via CryptoPay",
+      "title" : "Crypto Payment"
+    },
+    "ecompay-apple-pay" : {
+      "body" : "via EcomPay",
+      "title" : "Apple Pay"
+    },
+    "ecompay-google-pay" : {
+      "body" : "via EcomPay",
+      "title" : "Google Pay"
+    },
+    "ecompay" : {
+      "body" : "via EcomPay",
+      "title" : "Other method"
+    }
+  }
+}
