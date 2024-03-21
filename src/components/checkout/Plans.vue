@@ -5,28 +5,25 @@
       <RadioGroupLabel class="sr-only">Pricing plans</RadioGroupLabel>
       <div class="flex flex-wrap flex-col gap-4 -space-y-px rounded-xl">
         <RadioGroupOption v-for="plan in store.plans"
-                  :key="plan.name"
-                  v-slot="{ checked, active }"
-                  :value="plan"
-                  as="template">
-                  <div :class="[checked ? 'z-10 border-light-blue-color ' : 'border-transparent ', 'relative flex cursor-pointer flex-col border p-6 focus:outline-none md:grid md:grid-cols-3 md:pl-4 md:pr-6 rounded-xl backdrop-blur-sm bg-white/5']">
-                    <span class="flex items-center text-sm">
-                      <span :class="[checked ? 'border-white' : 'border-medium-blue-color', active ? 'ring-2 ring-offset-1 ring-light-blue-color' : '', 'h-4 w-4 bg-white rounded-full border flex items-center justify-center']"
-                            aria-hidden="true">
-                        <span :class="[checked ? 'bg-light-blue-color' : 'bg-transperant', 'rounded-full w-2 h-2']"></span>
-                      </span>
-                      <RadioGroupLabel class="ml-3 text-2xl text-white font-medium" as="span">{{ plan.name }}</RadioGroupLabel>
-                    </span>
-                    <RadioGroupDescription :class="[ 'ml-6 pl-1 text-sm md:ml-0 md:pl-0 text-white md:text-right self-end']"
-                                          as="span">
-                      Initial balance
-                    </RadioGroupDescription>
-                    <RadioGroupDescription :class="['ml-6 pl-1 md:ml-0 md:pl-0 md:text-right text-white text-2xl']"
-                                          as="span">
-                      {{ formatMoney(plan.initialBalance) }}
-                    </RadioGroupDescription>
-                  </div>
-                </RadioGroupOption>
+            :key="plan.name"
+            v-slot="{ checked, active }"
+            :value="plan"
+            as="template">
+            <div :class="[checked ? 'z-10 border-light-blue-color ' : 'border-transparent ', 'relative flex cursor-pointer flex-col border p-6 focus:outline-none md:grid md:grid-cols-3 md:pl-4 md:pr-6 rounded-xl backdrop-blur-sm bg-white/5']">
+              <span class="flex items-center text-sm">
+                <RadioButton :checked="checked" :active="active" />
+                <RadioGroupLabel class="ml-3 text-2xl text-white font-medium" as="span">{{ plan.name }}</RadioGroupLabel>
+              </span>
+              <RadioGroupDescription :class="[ 'ml-6 pl-1 text-sm md:ml-0 md:pl-0 text-white md:text-right self-end']"
+                                    as="span">
+                Initial balance
+              </RadioGroupDescription>
+              <RadioGroupDescription :class="['ml-6 pl-1 md:ml-0 md:pl-0 md:text-right text-white text-2xl']"
+                                    as="span">
+                {{ formatMoney(plan.initialBalance) }}
+              </RadioGroupDescription>
+            </div>
+          </RadioGroupOption>
 
       </div>
     </RadioGroup>
@@ -40,6 +37,7 @@ import type {Plan} from "@/api/types";
 import {useCheckoutStore} from "@/stores/checkout";
 import {formatMoney} from "@/utils/numberFormatter";
 import {unref} from "vue";
+import RadioButton from "@/components/ui/Input/RadioButton.vue";
 
 const store = useCheckoutStore()
 

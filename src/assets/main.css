@@ -11,9 +11,17 @@ body {
 }
 
 nav .router-link-active {  /* router-link-exact-active */
-    @apply bg-indigo-700 text-white;
+    @apply text-white;
 }
 
 nav a:not(.router-link-active) {
-    @apply text-indigo-200 hover:text-white hover:bg-indigo-700;
+    @apply text-indigo-200 hover:text-white hover:bg-dark-blue-color;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+  @apply bg-transparent text-white;
+  transition: background-color 5000s ease-in-out 0s, color 5000s ease-in-out 0s;
 }

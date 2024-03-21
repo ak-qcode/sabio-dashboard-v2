@@ -1,49 +1,74 @@
 <template>
-  <div>
-    <label for="language" :class="['appearance-none block text-sm font-medium leading-6', isSidebar ? 'text-indigo-200' : 'text-gray-900']">Language</label>
-    <select id="language" :value="tolgee.getLanguage()" v-on:change="changeLanguage" :class="[isSidebar ? 'ring-indigo-400 bg-indigo-500 text-indigo-200 focus:text-white focus:ring-indigo-200' : 'text-gray-900 ring-gray-300 focus:ring-indigo-600', 'mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 ring-1 ring-inset focus:ring-2 sm:text-sm sm:leading-6']">
-      <option v-for="language in languages" :key="language.locale" :value="language.locale">{{ language.name }}</option>
-    </select>
+  <div class="relative min-w-28">
+    <button @click="toggleDropdown" class="text-dop-color group w-full flex gap-x-2 items-center rounded-md p-2 text-sm font-semibold hover:bg-blue-color">
+      <img :src="selectedLanguage.icon" class="mr-1 h-6 w-6 rounded-full" alt="Flag" />
+      <span>{{ selectedLanguage.name }}</span>
+      <div class="border rounded-md border-white-opacity-color group-hover:border-dop-color p-1">
+        <ChevronDown :class="{'svg-rotate': isOpen}" class="transition-transform duration-200"/>
+      </div>
+    </button>
+    <ul v-if="isOpen" class="space-y-1 text-dop-color shadow-md border border-white-opacity-color rounded-md absolute w-full z-10 bg-black" role="list">
+      <li v-for="language in languages" :key="language.locale">
+        <button
+          :class="[selectedLanguage.locale === language.locale ? 'bg-blue-color text-white' : 'text-indigo-200 hover:text-white w-full hover:bg-blue-color', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold w-full']"
+          @click="selectLanguage(language)"
+        >
+          <img :src="language.icon" class="h-6 w-6 rounded-full" :alt="`${language.name} flag`" />
+          <span class="truncate">{{ language.name }}</span>
+        </button>
+      </li>
+    </ul>
   </div>
 </template>
 
-<script setup lang="ts">
-import { useTolgee } from '@tolgee/vue';
+<script setup>
+import { ref, computed } from 'vue';
+import ChevronDown from '@/components/ui/icons/ChevronDown.vue';
+import { useTradingAccountStore } from "@/stores/tradingAccount";
 
-defineProps([
-  'isSidebar',
-])
+import FlagEn from '@/assets/flags/flagEn.svg';
 
-const tolgee = useTolgee(['language']);
+const tradingAccountStore = useTradingAccountStore();
+const isOpen = ref(false);
+const toggleDropdown = () => isOpen.value = !isOpen.value;
 
-const changeLanguage = (e: Event) => {
-  tolgee.value.changeLanguage((e.target as HTMLInputElement).value);
-};
-
-const languages = [
+const languages = ref([
   {
     locale: "en",
-    name: "English",
+    name: "EN",
+    icon: FlagEn
   },
   {
     locale: "es",
-    name: "Español",
+    name: "ES",   
+    icon: FlagEn
   },
   {
     locale: "fr",
-    name: "Français",
+    name: "FR",
+    icon: FlagEn
   },
   {
     locale: "pt",
-    name: "Português",
+    name: "PT",
+    icon: FlagEn
   },
   {
     locale: "de",
-    name: "Deutsch",
+    name: "DE",
+    icon: FlagEn
   },
   {
     locale: "it",
-    name: "Italiano",
+    name: "IT",
+    icon: FlagEn
   },
-];
+]);
+
+const selectedLanguage = ref(languages.value[0]);
+
+const selectLanguage = (language) => {
+  selectedLanguage.value = language;
+  isOpen.value = false;
+};
 </script>
