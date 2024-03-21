@@ -11,7 +11,7 @@ body {
 }
 
 nav .router-link-active {  /* router-link-exact-active */
-    @apply bg-blue-color text-white;
+    @apply text-white;
 }
 
 nav a:not(.router-link-active) {

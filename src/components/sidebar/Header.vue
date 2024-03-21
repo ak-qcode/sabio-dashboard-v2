@@ -44,7 +44,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class=" flex w-full h-14 shrink-0 items-center gap-x-4 bg-black px-3 shadow-sm sm:gap-x-6">
+    <div class=" flex w-full h-14 shrink-0 items-center gap-x-4 bg-black px-4 shadow-sm sm:gap-x-6">
         <button type="button" class="-m-2.5 p-2.5 text-gray-700 lg:hidden" @click="sidebarOpen = true">
             <span class="sr-only">Open sidebar</span>
             <Bars3Icon class="h-6 w-6" aria-hidden="true" />

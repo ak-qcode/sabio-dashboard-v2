@@ -8,11 +8,11 @@
     <main class="flex flex-1 overflow-auto">
       <aside>
         <MobileSidebar v-model="sidebarOpen" :navigation="navigation" />
-        <DesktopSidebar :navigation="navigation" />
+        <DesktopSidebar :navigation="navigation" :isSidebarCollapsed="isSidebarCollapsed" @toggle="toggleSidebar" />
       </aside>
 
-      <div class="flex-1 overflow-auto lg:pl-72 pt-6 lg:pt-1">
-        <div v-if="authStore.customer" class="px-4 sm:px-6 lg:px-8">
+      <div :class="[isSidebarCollapsed ? 'pl-12' : 'pl-72', 'flex-1 overflow-auto transition-all duration-300']">
+        <div v-if="authStore.customer" class="px-4 sm:px-6 lg:px-8 container mx-auto">
           <slot />
         </div>
       </div>
@@ -45,7 +45,11 @@ import EducationIcon from '@/components/ui/icons/EducationIcon.vue'
 import StarsIcon from '@/components/ui/icons/StarsIcon.vue'
 import CertificatesIcon from '@/components/ui/icons/CertificatesIcon.vue'
 import CommunityIcon from '@/components/ui/icons/CommunityIcon.vue'
-import AccountsHoveredIcon from '@/components/ui/icons/hovered/AccountsHoveredIcon.vue'
+import AccountsAccentIcon from '@/components/ui/icons/accent/AccountsIcon.vue'
+import TradingDashboardAccentIcon from '@/components/ui/icons/accent/TradingDashboardIcon.vue'
+import ChartAccentIcon from '@/components/ui/icons/accent/ChartIcon.vue'
+import CheckoutAccentIcon from '@/components/ui/icons/accent/CheckoutIcon.vue'
+import TradeRoomAccentIcon from '@/components/ui/icons/accent/TradeRoomIcon.vue'
 
 import MobileSidebar from "@/components/sidebar/MobileSidebar.vue";
 import DesktopSidebar from "@/components/sidebar/DesktopSidebar.vue";
@@ -53,15 +57,16 @@ import Header from "@/components/sidebar/Header.vue";
 import Footer from "@/components/sidebar/Footer.vue";
 import {initFlowbite} from "flowbite";
 import {useAuthStore} from "@/stores/auth";
+import { isSidebarCollapsed } from '@/stores/sidebarState';
 
 const navigation = [
     // { name: 'SabioVerse', href: '/sabioverse', icon: HomeIcon },
-    { name: 'TradeRoom', href: '/traderoom', icon: ChartIcon, hoveredIcon: ChartIcon },
-    { name: 'Trading Dashboard', href: '/', icon: TradingDashboardIcon, hoveredIcon: ChartIcon  },
-    { name: 'Login', href: '/login', icon: UsersIcon, hoveredIcon: ChartIcon  },
-    { name: 'Profile', href: '/profile', icon: UsersIcon, hoveredIcon: ChartIcon  },
-    { name: 'My accounts', href: '/accounts', icon: AccountsIcon, hoveredIcon: AccountsHoveredIcon  },
-    { name: 'Checkout', href: '/checkout', icon: CheckoutIcon, hoveredIcon: ChartIcon  },
+    { name: 'TradeRoom', href: '/traderoom', icon: ChartIcon, activeIcon: TradeRoomAccentIcon },
+    { name: 'Trading Dashboard', href: '/', icon: TradingDashboardIcon, activeIcon: TradingDashboardAccentIcon  },
+    { name: 'Login', href: '/login', icon: UsersIcon, activeIcon: ChartIcon  },
+    { name: 'Profile', href: '/profile', icon: UsersIcon, activeIcon: ChartIcon  },
+    { name: 'My accounts', href: '/accounts', icon: AccountsIcon, activeIcon: AccountsAccentIcon  },
+    { name: 'Checkout', href: '/checkout', icon: CheckoutIcon, activeIcon: CheckoutAccentIcon  },
     // { name: 'Payouts', href: '/payouts', icon: PayoutsIcon },
     // { name: 'Competition', href: '/competition', icon: EducationIcon },
     // { name: 'Education', href: '/education', icon: EducationIcon },
@@ -71,6 +76,10 @@ const navigation = [
 ]
 
 const sidebarOpen = ref(false)
+const toggleSidebar = () => {
+  isSidebarCollapsed.value = !isSidebarCollapsed.value;
+};
+
 
 onMounted(() => {
   initFlowbite();
