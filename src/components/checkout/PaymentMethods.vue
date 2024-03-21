@@ -7,6 +7,7 @@ import useFetch from "@/api/useFetch";
 import type {PaymentMethodWithSupportedCountries} from "@/api/types";
 import {useAuthStore} from "@/stores/auth";
 import {useCheckoutStore} from "@/stores/checkout";
+import Button from '@/components/ui/Button/Button.vue';
 
 const authStore = useAuthStore()
 const checkoutStore = useCheckoutStore()
@@ -86,7 +87,7 @@ const getColSpanClass = (idx: number) => {
 
       <div v-if="!isFetching && !error && paymentMethods" class="mt-4 grid grid-cols-1 gap-y-6 sm:grid-cols-3 sm:gap-x-4">
         <RadioGroupOption as="template" v-for="(paymentMethod, idx) in paymentMethods" :key="paymentMethod.key" :value="paymentMethod" v-slot="{ checked, active }">
-          <div :class="[checked ? 'border-transparent' : 'border-gray-300', active ? 'ring-2 ring-indigo-500' : '', getColSpanClass(idx), 'relative flex cursor-pointer rounded-lg border bg-white p-4 shadow-sm focus:outline-none']">
+          <div :class="[checked ? 'border-transparent' : 'border-gray-300', active ? 'ring-2 ring-indigo-500' : '', getColSpanClass(idx), 'relative flex cursor-pointer rounded-lg border p-4 shadow-sm focus:outline-none']">
               <span class="flex flex-1">
                 <span class="flex flex-col">
                   <RadioGroupLabel as="span" class="block text-sm font-medium text-white">{{ $t('payment_methods.' + paymentMethod.key + '.title') }}</RadioGroupLabel>
@@ -106,5 +107,8 @@ const getColSpanClass = (idx: number) => {
   </div>
 
   <BankCardForm v-if="checkoutStore.selectedPaymentMethod?.key === 'bank-card'" class="mt-8" />
-
+  <div class="flex justify-center">
+    <Button class="mt-5" type="submit" :disabled="!checkoutStore.ready">Proceed to Checkout</Button>
+  </div>
+  
 </template>

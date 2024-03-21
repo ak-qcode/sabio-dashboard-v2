@@ -45,6 +45,7 @@ import EducationIcon from '@/components/ui/icons/EducationIcon.vue'
 import StarsIcon from '@/components/ui/icons/StarsIcon.vue'
 import CertificatesIcon from '@/components/ui/icons/CertificatesIcon.vue'
 import CommunityIcon from '@/components/ui/icons/CommunityIcon.vue'
+import AccountsHoveredIcon from '@/components/ui/icons/hovered/AccountsHoveredIcon.vue'
 
 import MobileSidebar from "@/components/sidebar/MobileSidebar.vue";
 import DesktopSidebar from "@/components/sidebar/DesktopSidebar.vue";
@@ -54,19 +55,19 @@ import {initFlowbite} from "flowbite";
 import {useAuthStore} from "@/stores/auth";
 
 const navigation = [
-    { name: 'SabioVerse', href: '/sabioverse', icon: HomeIcon },
-    { name: 'TradeRoom', href: '/traderoom', icon: ChartIcon },
-    { name: 'Trading Dashboard', href: '/', icon: TradingDashboardIcon },
-    { name: 'Login', href: '/login', icon: UsersIcon },
-    { name: 'Profile', href: '/profile', icon: UsersIcon },
-    { name: 'My accounts', href: '/accounts', icon: AccountsIcon },
-    { name: 'Checkout', href: '/checkout', icon: CheckoutIcon },
-    { name: 'Payouts', href: '/payouts', icon: PayoutsIcon },
-    { name: 'Competition', href: '/competition', icon: EducationIcon },
-    { name: 'Education', href: '/education', icon: EducationIcon },
-    { name: 'Trading Psychology', href: '/tradingpsychology', icon: StarsIcon },
-    { name: 'Certificates', href: '/certificates', icon: CertificatesIcon },
-    { name: 'Community', href: '/community', icon: CommunityIcon },
+    // { name: 'SabioVerse', href: '/sabioverse', icon: HomeIcon },
+    { name: 'TradeRoom', href: '/traderoom', icon: ChartIcon, hoveredIcon: ChartIcon },
+    { name: 'Trading Dashboard', href: '/', icon: TradingDashboardIcon, hoveredIcon: ChartIcon  },
+    { name: 'Login', href: '/login', icon: UsersIcon, hoveredIcon: ChartIcon  },
+    { name: 'Profile', href: '/profile', icon: UsersIcon, hoveredIcon: ChartIcon  },
+    { name: 'My accounts', href: '/accounts', icon: AccountsIcon, hoveredIcon: AccountsHoveredIcon  },
+    { name: 'Checkout', href: '/checkout', icon: CheckoutIcon, hoveredIcon: ChartIcon  },
+    // { name: 'Payouts', href: '/payouts', icon: PayoutsIcon },
+    // { name: 'Competition', href: '/competition', icon: EducationIcon },
+    // { name: 'Education', href: '/education', icon: EducationIcon },
+    // { name: 'Trading Psychology', href: '/tradingpsychology', icon: StarsIcon },
+    // { name: 'Certificates', href: '/certificates', icon: CertificatesIcon },
+    // { name: 'Community', href: '/community', icon: CommunityIcon },
 ]
 
 const sidebarOpen = ref(false)

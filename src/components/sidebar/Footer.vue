@@ -8,15 +8,22 @@ import BellIcon from '@/components/ui/icons/BellIcon.vue'
 import QuestionIcon from '@/components/ui/icons/QuestionIcon.vue'
 import ChevronDown from '@/components/ui/icons/ChevronDown.vue'
 import {useTradingAccountStore} from "@/stores/tradingAccount";
+import { useRouter } from 'vue-router';
 
 const sidebarOpen = defineModel();
 
 const authStore = useAuthStore();
+const router = useRouter();
 
 const userNavigation = [
-    { name: 'Your profile', href: '#' },
-    { name: 'Sign out', href: '#', onClick: authStore.logOut },
+    { name: 'Log out', href: '#', onClick: () => handleLogout() },
 ]
+
+const handleLogout = () => {
+  authStore.logOut();
+  router.push({ name: 'login' }); 
+};
+
 defineProps([
     'navigation',
 ])
@@ -47,9 +54,9 @@ const tradingAccountStore = useTradingAccountStore();
                 </span>
                     </MenuButton>
                     <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
-                        <MenuItems class="absolute left-0 bottom-10 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
+                        <MenuItems class="absolute left-0 bottom-12 z-10 mt-2.5 w-32 origin-top-right rounded-xl border border-ligth-blue-color py-2 shadow-lg backdrop-blur-sm bg-dark-blue ring-1 ring-gray-900/5 focus:outline-none">
                             <MenuItem v-for="item in userNavigation" :key="item.name" v-slot="{ active }" @click="item.onClick">
-                                <a :href="item.href" :class="[active ? 'bg-gray-50' : '', 'block px-3 py-1 text-sm leading-6 text-gray-900']">{{ item.name }}</a>
+                                <a :href="item.href" :class="[active ? 'text-white' : '', 'block px-3 py-1 text-sm leading-6 text-dop-color']">{{ item.name }}</a>
                             </MenuItem>
                         </MenuItems>
                     </transition>

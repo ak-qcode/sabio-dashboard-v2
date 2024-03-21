@@ -67,10 +67,9 @@ onMounted(() => {
                 </a>
                 
             </div>
-            <!-- <div class="text-xs font-semibold leading-6 text-indigo-200">Your trading accounts</div> -->
             <div class="relative min-w-40">
                 <button @click="toggleDropdown" class="text-dop-color border border-white-opacity-color group flex gap-x-3 items-center rounded-md p-2 text-sm font-semibold  hover:bg-indigo-700">
-                <span>{{ tradingAccountStore.currentAccount ? (tradingAccountStore.currentAccount.display_name || 'Unnamed #' + tradingAccountStore.currentAccount.login) : 'Select Account' }}</span>
+                <span>{{ tradingAccountStore.currentAccount ? (tradingAccountStore.currentAccount.display_name || 'Unnamed # — ' + tradingAccountStore.currentAccount.login) : 'Select Account' }}</span>
                 <ChevronDown :class="{'svg-rotate': isOpen}"/>
                 </button>
                 <ul v-if="isOpen" class="space-y-1 text-dop-color shadow-md border border-white-opacity-color rounded-md absolute w-full z-10 bg-black" role="list">
